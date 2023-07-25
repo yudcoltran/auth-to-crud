@@ -22,9 +22,9 @@ async def login(request: Request, form: OAuth2PasswordRequestForm=Depends()):
         'email': form.username
     })
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'User not exist')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'Username does not exist', headers={"WWW-Authenticate": "Bearer"})
     if not verify(form.password, user["password"]):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'Incorrect username or password')
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f'Incorrect username or password', headers={"WWW-Authenticate": "Bearer"})
     access_token = token.create_access_token(
         data = {"sub": user["email"]}
     )

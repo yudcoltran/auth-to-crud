@@ -3,7 +3,7 @@ import uuid
 from typing import Union, List
 
 class User(BaseModel):
-    id: str = Field(default_factory=uuid.uuid4, alias='_id')
+    # id: str = Field(default_factory=uuid.uuid4, alias='_id')
     name: str
     email: str 
     password: str
@@ -12,7 +12,7 @@ class User(BaseModel):
         populate_by_name = True
 
 class Item(BaseModel):
-    id: str = Field(default_factory=uuid.uuid4, alias='_id')
+    # id: str = Field(default_factory=uuid.uuid4, alias='_id')
     name: str
     description: str | None = Field(default= None)
     class Config:

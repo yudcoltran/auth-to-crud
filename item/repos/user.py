@@ -1,3 +1,4 @@
+from bson import ObjectId
 from fastapi import Request, Body, Response, status, HTTPException
 from ..schemas import User, ShowUser
 from fastapi.encoders import jsonable_encoder
@@ -12,14 +13,15 @@ def create(request: Request, cuser: User = Body(...)):
     check_flag = request.app.db["users"].find_one({"email": user["email"]})
     if check_flag:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'User email is already exist')
-    try:
-        new_user = request.app.db["users"].insert_one(user)
-        create_user = request.app.db["users"].find_one(
-            {"_id": new_user.inserted_id}
-        )
-        return {'msg': '', 'code': 1, 'data': create_user}
-    except:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'User id is already exist')
+    # try:
+    new_user = request.app.db["users"].insert_one(user)
+    
+    create_user = request.app.db["users"].find_one(
+        {"_id": str(new_user.inserted_id)}
+    )
+    return {'msg': '', 'code': 1, 'data': create_user}
+    # except:
+    #     raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f'User id is already exist')
 
 def get(request: Request):
     users = request.app.db["users"].find()
