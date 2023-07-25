@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from pymongo import MongoClient
 from dotenv import dotenv_values
 from contextlib import asynccontextmanager
-from .routers import user, item
+from .routers import user, item, authen
 
 config = dotenv_values()
 
@@ -16,7 +16,8 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(user.router)
-
+app.include_router(authen.router)
+app.include_router(item.router)
 
 
 
